@@ -84,7 +84,7 @@ module quaternions
         procedure       ::  quatAxis
         generic         ::  axis => quatAxis
         
-        procedure      ::  quatMatrix
+        procedure       ::  quatMatrix
         generic         ::  matrix => quatMatrix
 
     end type quaternion
@@ -616,4 +616,13 @@ contains
         
         rotatedVectorQ = matmul(quat%matrix(), vector)
     end function
+    
+    subroutine rotateVectorQ(vector, quat)
+        implicit none
+        double precision                ::  vector(3)
+        class (quaternion), intent(in)  ::  quat
+        
+        
+        vector = rotatedVectorQ(vector, quat)
+    end subroutine
 end module quaternions
