@@ -23,4 +23,6 @@ program testquaternions
     testquat=addQuaternions(testquat, testquat2)
     write(6,*) testquat%array, testquat%w, testquat%x, testquat%y, testquat%z, testquat%scalar, testquat%vector
 
+    write(6,*) 'Example program output:'
+    call execute_command_line("./quatexample")
 end program

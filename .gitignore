@@ -3,6 +3,7 @@
 *.mod
 *.o
 testquats
+quatexample
 
 # ignore MAC OS hidden files:
 
