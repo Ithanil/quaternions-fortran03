@@ -1,9 +1,12 @@
 quaternions-fortran03
 =====================
 
+##### Short Description:
 A Fortran 2003 module, which provides a quaternion type with common operations as type-bound procedures and several functions on type quaternion (including overloading of + / - / * / =)
 
-Basic Usage:
+### Basic Usage Example:
+
+```FORTRAN
 
 program testQuaternion
 implicit none
@@ -27,4 +30,4 @@ testquat%multiply(testquat%inverse())
 write(6,*) testquat%w, testquat%x, testquat%y, testquat%z 
 
 end program
-
+```
