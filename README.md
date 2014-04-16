@@ -8,7 +8,7 @@ A Fortran 2003 module, which provides a quaternion type with common operations a
 
 ```FORTRAN
 
-program testQuaternion
+program quatExample
   implicit none
 
   type (quaternion) :: testquat
