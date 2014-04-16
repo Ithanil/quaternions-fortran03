@@ -314,6 +314,7 @@ contains
         implicit none
         class (quaternion), intent(in)  ::  this
         type (quaternion)               ::  quatConjugated
+        call quatConjugated%init()
 
         call quatConjugated%copy(this)
         quatConjugated%vector = -1.d0 * quatConjugated%vector
@@ -336,7 +337,8 @@ contains
         implicit none
         class (quaternion), intent(in)  ::  this
         type (quaternion)               ::  quatInverse
-
+        call quatInverse%init()
+        
         call quatInverse%copy(this%conjugated())
         call quatInverse%multiply(1.d0/this%norm())
     end function

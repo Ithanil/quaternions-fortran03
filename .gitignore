@@ -2,6 +2,9 @@
 
 *.mod
 *.o
+*.dSYM
+
+# ignore executables
 testquats
 quatexample
 

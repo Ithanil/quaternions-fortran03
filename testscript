@@ -1,9 +1,10 @@
 #!/bin/bash
 rm *.mod
 rm *.o
+rm -r *.dSYM
 
-gfortran -c quaternions.F03
-gfortran quatexample.F03 quaternions.o -o quatexample
-gfortran testquats.F03 quaternions.o -o testquats
+gfortran -g -fbounds-check -c quaternions.F03
+gfortran -g -fbounds-check quatexample.F03 quaternions.o -o quatexample
+gfortran -g -fbounds-check testquats.F03 quaternions.o -o testquats
 
 ./testquats
