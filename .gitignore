@@ -1,17 +1,15 @@
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Icon must ends with two \r.
-Icon
-
-# Thumbnails
-._*
-Thumbs.db
-
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
+# ignore files from compilation:
 
 *.mod
 *.o
+
+# ignore MAC OS hidden files:
+
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+Thumbs.db
+.Spotlight-V100
+.Trashes
