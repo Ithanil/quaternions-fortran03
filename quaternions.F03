@@ -24,8 +24,6 @@
 module quaternions
     implicit none
 
-
-
     type quaternion
 
         double precision                ::  array(4)
@@ -97,15 +95,30 @@ module quaternions
 
     interface operator(+)
         module procedure addQuaternions
+        module procedure addQuaternionScalar
+        module procedure addScalarQuaternion
     end interface
 
 
     interface operator(-)
         module procedure subQuaternions
+        module procedure subQuaternionScalar
+        module procedure subScalarQuaternion
     end interface
 
     interface operator(*)
         module procedure multiplyQuaternions
+        module procedure multiplyQuaternionScalar
+        module procedure multiplyScalarQuaternion
+    end interface
+
+    interface operator(/)
+        module procedure divideQuaternionsRS
+        module procedure divideQuaternionsScalar
+    end interface
+
+    interface operator(//)
+        module procedure divideQuaternionsLS
     end interface
 
 contains
@@ -382,7 +395,7 @@ contains
         crossQuaternions%vector = quata%vector.x.quatb%vector
     end function
 
-     function addQuaternions(quata, quatb)
+    function addQuaternions(quata, quatb)
         implicit none
         class (quaternion), intent(in)  ::  quata, quatb
         type (quaternion)               ::  addQuaternions
@@ -392,7 +405,29 @@ contains
         call addQuaternions%add(quata)
     end function
 
-     function subQuaternions(quata, quatb)
+    function addQuaternionScalar(quat, scalar)
+        implicit none
+        class (quaternion), intent(in)  ::  quat
+        double precision, intent(in)    ::  scalar
+        type (quaternion)               ::  addQuaternionScalar
+        call addQuaternionScalar%init()
+
+        call addQuaternionScalar%copy(quat)
+        call addQuaternionScalar%add(scalar)
+    end function
+
+    function addScalarQuaternion(scalar, quat)
+        implicit none
+        class (quaternion), intent(in)  ::  quat
+        double precision, intent(in)    ::  scalar
+        type (quaternion)               ::  addScalarQuaternion
+        call addScalarQuaternion%init()
+
+        call addScalarQuaternion%copy(quat)
+        call addScalarQuaternion%add(scalar)
+    end function
+
+    function subQuaternions(quata, quatb)
         implicit none
         class (quaternion), intent(in)  ::  quata, quatb
         type (quaternion)               ::  subQuaternions
@@ -402,6 +437,30 @@ contains
         call subQuaternions%multiply(-1.d0)
         call subQuaternions%add(quata)
     end function
+
+    function subQuaternionScalar(quat, scalar)
+        implicit none
+        class (quaternion), intent(in)  ::  quat
+        double precision, intent(in)    ::  scalar
+        type (quaternion)               ::  subQuaternionScalar
+        call subQuaternionScalar%init()
+
+        call subQuaternionScalar%copy(quat)
+        call subQuaternionScalar%add(-scalar)
+    end function
+
+    function subScalarQuaternion(scalar, quat)
+        implicit none
+        class (quaternion), intent(in)  ::  quat
+        double precision, intent(in)    ::  scalar
+        type (quaternion)               ::  subScalarQuaternion
+        call subScalarQuaternion%init()
+
+        call subScalarQuaternion%copy(quat)
+        call subScalarQuaternion%multiply(-1.d0)
+        call subScalarQuaternion%add(scalar)
+    end function
+
 
     function multiplyQuaternions(quata, quatb)
         implicit none
@@ -413,4 +472,56 @@ contains
         call multiplyQuaternions%multiply(quata)
     end function
 
+    function multiplyQuaternionScalar(quat, scalar)
+        implicit none
+        class (quaternion), intent(in)  ::  quat
+        double precision, intent(in)    ::  scalar
+        type (quaternion)               ::  multiplyQuaternionScalar
+        call multiplyQuaternionScalar%init()
+
+        call multiplyQuaternionScalar%copy(quat)
+        call multiplyQuaternionScalar%multiply(scalar)
+    end function
+
+    function multiplyScalarQuaternion(scalar, quat)
+        implicit none
+        class (quaternion), intent(in)  ::  quat
+        double precision, intent(in)    ::  scalar
+        type (quaternion)               ::  multiplyScalarQuaternion
+        call multiplyScalarQuaternion%init()
+
+        call multiplyScalarQuaternion%copy(quat)
+        call multiplyScalarQuaternion%multiply(scalar)
+    end function
+
+    function divideQuaternionsRS(quata, quatb)
+        implicit none
+        class (quaternion), intent(in)  ::  quata, quatb
+        type (quaternion)               ::  divideQuaternionsRS
+        call divideQuaternions%init()
+
+        call divideQuaternionsRS%copy(quatb%inverse())
+        call divideQuaternionsRS%multiply(quata)
+    end function
+
+    function divideQuaternionScalar(quat, scalar)
+        implicit none
+        class (quaternion), intent(in)  ::  quat
+        double precision, intent(in)    ::  scalar
+        type (quaternion)               ::  divideQuaternionScalar
+        call divideQuaternionScalar%init()
+
+        call divideQuaternionScalar%copy(quat)
+        call divideQuaternionScalar%multiply(1.d0/scalar)
+    end function
+
+    function divideQuaternionsLS(quata, quatb)
+        implicit none
+        class (quaternion), intent(in)  ::  quata, quatb
+        type (quaternion)               ::  divideQuaternionsLS
+        call divideQuaternions%init()
+
+        call divideQuaternionsLS%copy(quatb)
+        call divideQuaternionsLS%multiply(quata%inverse())
+    end function
 end module quaternions
