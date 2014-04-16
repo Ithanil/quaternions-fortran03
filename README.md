@@ -1,14 +1,14 @@
 quaternions-fortran03
 =====================
 
-##### Short Description:
+#### Short Description:
 A Fortran 2003 module, which provides a quaternion type with common operations as type-bound procedures and several functions on type quaternion (including overloading of + / - / * / =)
 
-### Basic Usage Example:
+#### Basic Usage Example:
 
 ```FORTRAN
 
-program testQuaternion
+program quatExample
   implicit none
 
   type (quaternion) :: testquat
