@@ -114,7 +114,7 @@ module quaternions
 
     interface operator(/)
         module procedure divideQuaternionsRS
-        module procedure divideQuaternionsScalar
+        module procedure divideQuaternionScalar
     end interface
 
     interface operator(//)
@@ -498,7 +498,7 @@ contains
         implicit none
         class (quaternion), intent(in)  ::  quata, quatb
         type (quaternion)               ::  divideQuaternionsRS
-        call divideQuaternions%init()
+        call divideQuaternionsRS%init()
 
         call divideQuaternionsRS%copy(quatb%inverse())
         call divideQuaternionsRS%multiply(quata)
@@ -519,7 +519,7 @@ contains
         implicit none
         class (quaternion), intent(in)  ::  quata, quatb
         type (quaternion)               ::  divideQuaternionsLS
-        call divideQuaternions%init()
+        call divideQuaternionsLS%init()
 
         call divideQuaternionsLS%copy(quatb)
         call divideQuaternionsLS%multiply(quata%inverse())

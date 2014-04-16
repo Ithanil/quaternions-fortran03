@@ -1,0 +1,8 @@
+#!/bin/bash
+rm *.mod
+rm *.o
+
+gfortran -c quaternions.F03
+gfortran testquats.F03 quaternions.o -o testquats
+
+./testquats

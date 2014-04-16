@@ -2,6 +2,7 @@
 
 *.mod
 *.o
+testquats
 
 # ignore MAC OS hidden files:
 
