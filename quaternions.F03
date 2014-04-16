@@ -83,6 +83,9 @@ module quaternions
         
         procedure       ::  quatAxis
         generic         ::  axis => quatAxis
+        
+        procedure      ::  quatMatrix
+        generic         ::  matrix => quatMatrix
 
     end type quaternion
 
@@ -396,6 +399,22 @@ contains
         normfac = norm2(this%vector)
         quatAxis = this%vector / normfac
     end function
+    
+    function quatMatrix(this)
+        ! return the rotational matrix if quaternion this is interpreted as rotation (assuming normalized quaternion)
+    
+        implicit none
+        class(quaternion), intent(in)        :: this
+        double precision                     :: quatMatrix(3,3)
+        double precision                     :: thelp, sthelp, axhelp(3)
+        
+        thelp = norm2(this%vector)
+        axhelp = this%vector / thelp
+        sthelp = this%scalar*this%scalar - thelp*thelp
+        quatMatrix = reshape((/ sthelp, 0.d0, 0.d0, 0.d0, sthelp, 0.d0, 0.d0, 0.d0, sthelp /), shape(quatMatrix))
+        quatMatrix = quatMatrix + (2.d0 * thelp*thelp) * dyadVectors(axhelp, axhelp) - (2.d0 * this%scalar*thelp) * &
+            crossMatrix(axhelp)
+    end function
 
 
     !-----          NON-TYPE-BOUND PROCEDURES           -----!
@@ -429,6 +448,13 @@ contains
         crossVectors(3) = veca(1) * vecb(2) - veca(2) * vecb(1)
     end function
 
+    function crossMatrix(vec)
+        implicit none
+        double precision, intent(in)    ::  vec(3)
+        double precision                ::  crossMatrix(3,3)
+
+        crossMatrix = reshape((/ 0.d0, -vec(3), vec(2), vec(3), 0.d0, -vec(1), vec(2), vec(1), 0.d0 /), shape(crossMatrix))
+    end function
 
     function crossQuaternions(quata, quatb)
         implicit none
@@ -440,6 +466,18 @@ contains
         crossQuaternions%vector = quata%vector.x.quatb%vector
     end function
 
+
+    function dyadVectors(veca, vecb)
+        implicit none
+        double precision, intent(in)    ::  veca(3), vecb(3)
+        double precision                ::  dyadVectors(3,3)
+        
+        dyadVectors(1,:) = veca(1) * vecb
+        dyadVectors(2,:) = veca(2) * vecb
+        dyadVectors(3,:) = veca(3) * vecb       
+    end function
+        
+        
     function addQuaternions(quata, quatb)
         implicit none
         class (quaternion), intent(in)  ::  quata, quatb
@@ -568,5 +606,14 @@ contains
 
         call divideQuaternionsLS%copy(quatb)
         call divideQuaternionsLS%multiply(quata%inverse())
+    end function
+    
+    function rotatedVectorQ(vector, quat)
+        implicit none
+        double precision  , intent(in)  ::  vector(3)
+        class (quaternion), intent(in)  ::  quat
+        double precision                ::  rotatedVectorQ(3)
+        
+        rotatedVectorQ = matmul(quat%matrix(), vector)
     end function
 end module quaternions
