@@ -11,7 +11,7 @@ program quatexample
   use quaternions
   implicit none
 	
-  double precision  :: testvec = (/ 1.d0, 0.d0, 0.d0 /)  
+  double precision  :: testvec(3) = (/ 1.d0, 0.d0, 0.d0 /)  
   type (quaternion) :: testquat
 
   !---- THIS IS NOT OPTIONAL  ----!
