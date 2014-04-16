@@ -43,7 +43,8 @@ module quaternions
 
         procedure       ::  quatSet
         procedure       ::  quatSetfromArr
-        generic         ::  set => quatSet, quatSetfromArr
+        procedure       ::  quatSetfromAxisAngle
+        generic         ::  set => quatSet, quatSetfromArr, quatSetfromAxisAngle
 
         procedure       ::  quatCopy
         generic         ::  copy => quatCopy
@@ -76,6 +77,12 @@ module quaternions
 
         procedure       ::  quatInvert
         generic         ::  invert => quatInvert
+        
+        procedure       ::  quatAngle
+        generic         ::  angle => quatAngle
+        
+        procedure       ::  quatAxis
+        generic         ::  axis => quatAxis
 
     end type quaternion
 
@@ -213,6 +220,21 @@ contains
         class (quaternion)              ::  this
 
         this%array = array
+    end subroutine
+    
+    
+    subroutine quatSetfromAxisAngle(this, axis, angle)
+        ! sets the quaternion as rotational quaternion for axis and angle
+
+        implicit none
+        double precision, intent(in)    ::  axis(3), angle
+        class (quaternion)              ::  this
+        double precision                ::  normfac, hangle
+        hangle = 0.5d0*angle
+        normfac = sin(hangle)/norm2(axis)
+          
+        this%scalar = cos(hangle)           
+        this%vector = axis*normfac
     end subroutine
 
 
@@ -353,6 +375,27 @@ contains
         call this%conjugate()
         call this%multiply(1.d0/this%norm())
     end subroutine
+
+    function quatAngle(this)
+         ! return the angle if quaternion this is interpreted as rotation (assuming normalized quaternion)
+        implicit none
+        class(quaternion), intent(in)        :: this
+        double precision                    :: quatAngle
+
+        quatAngle = 2.d0*acos(this%w)
+    end function
+    
+
+    function quatAxis(this)
+        ! return the axis if quaternion this is interpreted as rotation (assuming normalized quaternion)
+    
+        implicit none
+        class(quaternion), intent(in)        :: this
+        double precision                    :: quatAxis(3), normfac
+    
+        normfac = norm2(this%vector)
+        quatAxis = this%vector / normfac
+    end function
 
 
     !-----          NON-TYPE-BOUND PROCEDURES           -----!
