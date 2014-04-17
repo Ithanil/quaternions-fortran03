@@ -3,6 +3,9 @@ rm *.mod
 rm *.o
 rm -r *.dSYM
 
+rm quatexample
+rm testquats
+
 gfortran -g -fbounds-check -c quaternions.F03
 gfortran -g -fbounds-check quatexample.F03 quaternions.o -o quatexample
 gfortran -g -fbounds-check testquats.F03 quaternions.o -o testquats

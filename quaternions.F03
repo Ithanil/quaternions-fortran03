@@ -260,8 +260,8 @@ contains
         class (quaternion)              ::  this
         double precision                ::  newscalar, newvector(3)
 
-        newscalar =  quat%scalar * this%scalar - quat%vector.o.this%vector
-        newvector =  quat%scalar * this%vector + this%scalar * quat%vector + quat%vector.x.this%vector
+        newscalar =  quat%scalar * this%scalar - (quat%vector.o.this%vector)
+        newvector =  quat%scalar * this%vector + this%scalar * quat%vector + (quat%vector.x.this%vector)
 
         this%scalar = newscalar
         this%vector = newvector
@@ -362,10 +362,13 @@ contains
         implicit none
         class (quaternion), intent(in)  ::  this
         type (quaternion)               ::  quatInverse
+        double precision                ::  normh
         call quatInverse%init()
         
+        normh = this%norm()
+        normh = 1.d0 / (normh * normh)
         call quatInverse%copy(this%conjugated())
-        call quatInverse%multiply(1.d0/this%norm())
+        call quatInverse%multiply(normh)
     end function
 
 
@@ -374,9 +377,12 @@ contains
 
         implicit none
         class (quaternion)              ::  this
-
+        double precision                ::  normh
+        
+        normh = this%norm()
+        normh = 1.d0 / (normh * normh)
         call this%conjugate()
-        call this%multiply(1.d0/this%norm())
+        call this%multiply(normh)
     end subroutine
 
     function quatAngle(this)
