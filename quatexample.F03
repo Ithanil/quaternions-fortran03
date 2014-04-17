@@ -24,7 +24,7 @@ program quatexample
   write(6,*) 'testvec', testvec
   write(6,*) 'testvec', rotatedVectorQ(testvec, testquat)
 
-  call testquat%multiply(testquat%inverse())
+  testquat = testquat * testquat%inverse()
   write(6,*) 'testquat', testquat%array
 
 end program

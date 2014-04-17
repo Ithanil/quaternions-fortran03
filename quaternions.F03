@@ -39,7 +39,9 @@ module quaternions
         procedure       ::  initQuaternion
         procedure       ::  initQuaternionfromQ
         procedure       ::  initQuaternionfromArr
-        generic         ::  init => initQPointers, initQuaternion, initQuaternionfromQ, initQuaternionfromArr
+        procedure       ::  initQuaternionfromAxisAngle
+        generic         ::  init => initQPointers, initQuaternion, initQuaternionfromQ, &
+                                    initQuaternionfromArr, initQuaternionfromAxisAngle
 
         procedure       ::  quatSet
         procedure       ::  quatSetfromArr
@@ -198,6 +200,18 @@ contains
     end subroutine
 
 
+    subroutine initQuaternionfromAxisAngle(this, axis, angle)
+        ! rotational quaternion initializer for given axis and angle
+
+        implicit none
+        double precision, intent(in)    ::  axis(3), angle
+        class (quaternion)              ::  this
+       
+        call this%init()
+        call this%set(axis, angle)
+    end subroutine
+    
+    
     !-----          TYPE-BOUND PROCEDURES           -----!
 
 
